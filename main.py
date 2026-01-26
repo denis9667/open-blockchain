@@ -1,30 +1,27 @@
+import platform
 import os
 import numpy as num
+
+from clear import clear_console
+from admin import *
 
 user = "admin"
 password = "admin"
 log = ""
 pas = ""
 
-def adminpanel():
-    print("#############open-blockchain##########")
-    print("###############admin-panel############")
-    print("# 1. start open-blockchain           #")
-    print("# 2. settings                        #")
-    print("# 3. quit admin-panel                #")
-    print("######################################")
                                                    
 def login():                                        
-    print("#############open-blockchain##########")
-    print("to start/manage open-blockchain log in")
-    print("######################################")
+    print("#############open-blockchain##############")
+    print("# to start/manage open-blockchain log in #")
+    print("##########################################")
     print("")
     log = input("username:")
     if log == user:
         pas = input("password:")
         if pas == password:
             print("login successful!")
-            print("")
+            clear_console()
             adminpanel()
         else:
             print("wrong")
@@ -33,6 +30,7 @@ def login():
         print("wrong")
         login()
 
+print(platform.system())
 print("starting open-blockchain")
 print("|||")
 print("|||")
