@@ -12,4 +12,3 @@ Are forks allowed for this repository? Yes forks of this repository are allowed,
 <p>This project is not finished!</p>
 <p>If you want to contribute contact with me</p>
 
-g
