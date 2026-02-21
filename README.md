@@ -12,5 +12,5 @@ Are forks allowed for this repository? Yes forks of this repository are allowed,
 <p>This project is not finished!</p>
 <p>If you want to contribute contact with me</p>
 
-gitlab: <a>https://gitlab.com/open-blockchain1/open-blockchain.</a> 
-github: <a>https://github.com/denis9667/open-blockchain</a> 
+<p>gitlab: <a>https://gitlab.com/open-blockchain1/open-blockchain.</a> </p>
+<p>github: <a>https://github.com/denis9667/open-blockchain</a> </p>
