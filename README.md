@@ -14,4 +14,4 @@ Are forks allowed for this repository? Yes forks of this repository are allowed,
 
 <a href="https://gitlab.com/open-blockchain1/open-blockchain">gitlab</a>
 <p></p>
-<a href="https://github.com/denis9667/open-blockchain">github</a>    
+<a href="https://github.com/denis9667/open-blockchain">github</a>     
