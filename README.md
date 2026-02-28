@@ -11,7 +11,4 @@ It will be an open source blockchain
 Are forks allowed for this repository? Yes forks of this repository are allowed, But you need to edit name!
 <p>This project is not finished!</p>
 <p>If you want to contribute contact with me</p>
-
-<a href="https://gitlab.com/open-blockchain1/open-blockchain">gitlab</a>
-<p></p>
-<a href="https://github.com/denis9667/open-blockchain">github</a>    
+  
