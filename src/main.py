@@ -2,8 +2,8 @@ import platform
 import os
 import numpy as num
 
-from clear import clear_console
-from admin import *
+from .libs.clear import clear_console
+from .admin import *
 
 user = "admin"
 password = "admin"
@@ -30,12 +30,13 @@ def login():
         print("wrong")
         login()
 
-print(platform.system())
-print("starting open-blockchain")
-print("|||")
-print("|||")
-print("|||")
-login()
+def startup():
+    print(platform.system())
+    print("starting open-blockchain")
+    print("|||")
+    print("|||")
+    print("|||")
+    login()
 
 
  
