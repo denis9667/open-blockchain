@@ -1,0 +1,13 @@
+{
+	"nodes":[
+		{"id":"a53004420886e880","type":"text","text":"main.py\n\tвход в админский аккаунт, очистка экрана и запуск админской панели (admin.py)","x":-101,"y":-316,"width":250,"height":175,"color":"4"},
+		{"id":"350e3e6847f7e68f","type":"text","text":"start.py\n\tзапускает blockchain и main.py","x":-101,"y":-471,"width":250,"height":79,"color":"4"},
+		{"id":"02e6cb4aee1e0858","x":-500,"y":-45,"width":250,"height":60,"color":"2","type":"text","text":"clear.py\n\tочистка экрана"},
+		{"id":"baec5edff699ddd1","x":-102,"y":-47,"width":250,"height":141,"color":"1","type":"text","text":"admin.py\n\tзапуск админской панели, вывод админской панели на экран"}
+	],
+	"edges":[
+		{"id":"80d77c338e6c7737","fromNode":"350e3e6847f7e68f","fromSide":"bottom","toNode":"a53004420886e880","toSide":"top"},
+		{"id":"25a8a6fd155241e9","fromNode":"a53004420886e880","fromSide":"left","toNode":"02e6cb4aee1e0858","toSide":"top"},
+		{"id":"d798e5b3906e1a94","fromNode":"a53004420886e880","fromSide":"bottom","toNode":"baec5edff699ddd1","toSide":"top"}
+	]
+}
