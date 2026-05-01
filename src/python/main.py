@@ -1,7 +1,7 @@
 import platform
 import os
 
-from libs.clear import clear_console
+from libs.python.clear import clear_console
 from .admin import *
 
 user = "admin"

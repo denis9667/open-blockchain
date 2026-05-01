@@ -1,3 +1,3 @@
-from src.main import startup
+from src.python.main import startup
 
 startup() 
