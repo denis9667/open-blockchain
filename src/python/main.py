@@ -1,8 +1,7 @@
 import platform
 import os
-import numpy as num
 
-from .libs.clear import clear_console
+from libs.clear import clear_console
 from .admin import *
 
 user = "admin"
