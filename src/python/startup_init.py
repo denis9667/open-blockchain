@@ -6,6 +6,10 @@
 #(at your option) any later version.
 
 
-from src.python.main import startup
+from .libs.clear import clear_console as clear
 
-startup() 
+
+
+def startup_init():
+    print("starting main services")
+    
