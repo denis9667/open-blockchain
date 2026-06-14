@@ -6,7 +6,12 @@
 #(at your option) any later version.
 
 
-from src.python.startup_init import startup_init as startup
+import platform
+import os
 
-startup() 
-
+def clear_console():
+    if platform.system() == "Windows":
+        os.system('cls')
+    else:
+        os.system('clear')
+  

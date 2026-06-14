@@ -1,2 +1,5 @@
 /git/
-/src/__pycache__/
+# Игнорировать все папки __pycache__ в проекте
+**/__pycache__/
+*.py[cod]
+

@@ -6,7 +6,15 @@
 #(at your option) any later version.
 
 
-from src.python.startup_init import startup_init as startup
+from .libs.clear import clear_console as clear
+from .main import login
 
-startup() 
 
+
+def startup_init():
+    print("starting main services")
+    print("starting login")
+    clear()
+    login()
+
+    

@@ -1,14 +1,30 @@
+#Copyright (C) 2026  denis9667
+
+#This program is free software: you can redistribute it and/or modify
+#it under the terms of the GNU Affero General Public License as published by
+#the Free Software Foundation, either version 3 of the License, or
+#(at your option) any later version.
+
+
 import platform
 import os
-import numpy as num
 
+<<<<<<< HEAD:src/main.py
 from .libs.clear import clear_console
 from .admin import *
+=======
+from .libs.clear import clear_console as clear
+from .admin import adminpanel
+
+
+>>>>>>> dev:src/python/main.py
 
 user = "admin"
 password = "admin"
 log = ""
 pas = ""
+
+
 
                                                    
 def login():                                        
@@ -21,7 +37,7 @@ def login():
         pas = input("password:")
         if pas == password:
             print("login successful!")
-            clear_console()
+            clear()
             adminpanel()
         else:
             print("wrong")
@@ -39,4 +55,3 @@ def startup():
     login()
 
 
- 
