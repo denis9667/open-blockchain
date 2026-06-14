@@ -9,8 +9,8 @@ RU:
 
 это будет open source`ным блокчейном.
 <p>Разрешены ли форки этого репозитория? Да вы можете сделать форк этого репозитория, Но вы должны изменить название если вы не будете котрибировать в репозиторий используя форк</p>
-<p>проект ещё не закончен!</p>
-<p>Если вы хотите контрибировать свяжитесь со мной</p>
+<p>пожалуйста в pull request и commits если вы будете контрибировать указать информацию что было изменено или что было пофикшено</p>
+<p>проект ещё не закончен!</p
 
 <p>----------------------------------------------------------------------------------------------------------------------</p>
 
@@ -23,8 +23,8 @@ You are free to use, modify, and copy this blockchain server. However, if you mo
 
 For more details, see the full text in the [LICENSE](./LICENSE) file.
 
-It will be an open source blockchain
-Are forks allowed for this repository? Yes forks of this repository are allowed, But you need to edit name if you dont going to contribute to a repository using fork
+<p>It will be an open source blockchain<p>
+<p>Are forks allowed for this repository? Yes forks of this repository are allowed, But you need to edit name if you dont going to contribute to a repository using fork<p>
+<p>please in pull requests and commits if you will contribute write information aaout what was edited or what was been fixed</p>
 <p>This project is not finished!</p>
-<p>If you want to contribute contact with me</p>
    
