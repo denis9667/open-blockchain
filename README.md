@@ -8,7 +8,7 @@ RU:
 Полный текст лицензии находится в файле [LICENSE](./LICENSE).
 
 это будет open source`ным блокчейном.
-<p>Разрешены ли форки этого репозитория? Да вы можете сделать форк этого репозитория, Но вы должны изменить название!</p>
+<p>Разрешены ли форки этого репозитория? Да вы можете сделать форк этого репозитория, Но вы должны изменить название если вы не будете котрибировать в репозиторий используя форк</p>
 <p>проект ещё не закончен!</p>
 <p>Если вы хотите контрибировать свяжитесь со мной</p>
 
@@ -24,7 +24,7 @@ You are free to use, modify, and copy this blockchain server. However, if you mo
 For more details, see the full text in the [LICENSE](./LICENSE) file.
 
 It will be an open source blockchain
-Are forks allowed for this repository? Yes forks of this repository are allowed, But you need to edit name!
+Are forks allowed for this repository? Yes forks of this repository are allowed, But you need to edit name if you dont going to contribute to a repository using fork
 <p>This project is not finished!</p>
 <p>If you want to contribute contact with me</p>
    

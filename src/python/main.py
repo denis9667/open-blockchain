@@ -9,7 +9,9 @@
 import platform
 import os
 
-from .startup_init import *
+from .libs.clear import clear_console as clear
+from .admin import adminpanel
+
 
 
 user = "admin"
@@ -31,7 +33,7 @@ def login():
         if pas == password:
             print("login successful!")
             clear()
-            startup_init()
+            adminpanel()
         else:
             print("wrong")
             login()

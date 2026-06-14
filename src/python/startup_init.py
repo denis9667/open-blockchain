@@ -7,9 +7,14 @@
 
 
 from .libs.clear import clear_console as clear
+from .main import login
 
 
 
 def startup_init():
     print("starting main services")
+    print("starting login")
+    clear()
+    login()
+
     

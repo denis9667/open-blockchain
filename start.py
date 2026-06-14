@@ -6,6 +6,6 @@
 #(at your option) any later version.
 
 
-from src.python.main import startup
+from src.python.startup_init import startup_init as startup
 
 startup() 
