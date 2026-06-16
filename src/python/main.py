@@ -9,15 +9,13 @@
 import platform
 import os
 
-<<<<<<< HEAD:src/main.py
+
 from .libs.clear import clear_console
 from .admin import *
-=======
+
 from .libs.clear import clear_console as clear
 from .admin import adminpanel
 
-
->>>>>>> dev:src/python/main.py
 
 user = "admin"
 password = "admin"
