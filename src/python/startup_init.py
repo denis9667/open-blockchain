@@ -6,8 +6,8 @@
 #(at your option) any later version.
 
 
-from .libs.clear import clear_console as clear
-from .main import login
+from libs.clear import clear_console as clear
+from main import login
 
 
 
