@@ -6,7 +6,11 @@
 #(at your option) any later version.
 
 
-from src.python.startup_init import startup_init as startup
+import sys, os
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+from src.python.main import startup
 
-startup() 
+if __name__ == "__main__":
+    startup()
+
 
