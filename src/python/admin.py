@@ -6,11 +6,19 @@
 #(at your option) any later version.
 
 
+from .libs.clear import clear_console as clear
+
+def init_admpanel():
+    print("starting admin panel")
+    adminpanel()
+
 def adminpanel():
     print("#############open-blockchain##########")
     print("###############admin-panel############")
     print("# 1. start open-blockchain           #")
     print("# 2. settings                        #")
-    print("# 3. quit admin-panel                #")
+    print("# 3. plugins                         #")       
+    print("# 0. exit admin panel                #")
     print("######################################")
+    command = input(">")
      

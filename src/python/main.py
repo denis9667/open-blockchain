@@ -36,7 +36,7 @@ def login():
         if pas == password:
             print("login successful!")
             clear()
-            adminpanel()
+            init_admpanel()
         else:
             print("wrong")
             login()
