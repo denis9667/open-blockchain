@@ -27,5 +27,5 @@ For more details, see the full text in the [LICENSE](./LICENSE) file.
 <p>Are forks allowed for this repository? Yes forks of this repository are allowed, But you need to edit name if you dont going to contribute to a repository using fork<p>
 <p>please in pull requests and commits if you will contribute write information aaout what was edited or what was been fixed</p>
 <p>This project is not finished!</p>
->>>>>>> dev
+
    
