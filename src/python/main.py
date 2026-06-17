@@ -5,140 +5,138 @@
 #the Free Software Foundation, either version 3 of the License, or
 #(at your option) any later version.
 
-import platform
-import os
 
-# Пытаемся импортировать костыль очистки. Если не найдём - включим стандартный
+import os, sys, time, json, urllib.request, subprocess
+
 try:
     from libs.clear import clear_console as clear
 except ModuleNotFoundError:
-    def clear():
-        os.system('cls' if os.name == 'nt' else 'clear')
+    def clear(): os.system('cls' if os.name == 'nt' else 'clear')
 
-user = "admin" #стандартный пользователь (админ)
-password = "admin" #стандартный пароль от аккаунта (админа)
-stat = 0  # 0 - остановлен, 1 - запущен
+user, password = "admin", "admin"
+PID_FILE = "blockchain_node.pid"
+SERVER_URL = "http://127.0.0.1:8000"
 
+def check_node_alive():
+    try:
+        with urllib.request.urlopen(f"{SERVER_URL}/status", timeout=1) as r:
+            return json.loads(r.read().decode())
+    except: return None
+
+def send_post(endpoint, data):
+    try:
+        req = urllib.request.Request(f"{SERVER_URL}{endpoint}", data=json.dumps(data).encode('utf-8'), headers={'Content-Type': 'application/json'})
+        with urllib.request.urlopen(req) as r: return json.loads(r.read().decode())
+    except: return {"status": "error"}
 
 def com_exec(command): 
-    global stat  # Работаем с глобальным статусом
+    node_info = check_node_alive()
+    is_running = node_info is not None
     
     if command == "1":
         clear()
-        if stat == 0:
-            print("starting open-blockchain...") 
-            stat = 1 
+        if not is_running:
+            print("[DAEMON] Запуск фонового блокчейна FastAPI через pythonw...")
+            try:
+                # Находим путь к скрытому pythonw.exe в вашем окружении или системе
+                python_exe = sys.executable
+                pythonw_exe = python_exe.replace("python.exe", "pythonw.exe")
+                if not os.path.exists(pythonw_exe):
+                    pythonw_exe = "pythonw"
+
+                # Путь к файлу сервера
+                server_path = os.path.join(os.path.dirname(__abspath__ if '__abspath__' in locals() else __file__), "server.py")
+                
+                # Запускаем сервер абсолютно скрытно, без создания окна консоли
+                creation_flags = subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0
+                proc = subprocess.Popen(
+                    [pythonw_exe, server_path],
+                    creationflags=creation_flags,
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL
+                )
+                
+                # Записываем ID процесса в файл, чтобы потом его потушить
+                with open(PID_FILE, "w") as f:
+                    f.write(str(proc.pid))
+                
+                # Ждем инициализации сервера
+                time.sleep(2.5)
+                if check_node_alive():
+                    print("[SUCCESS] Блокчейн успешно запущен в фоне!")
+                else:
+                    print("[ERROR] Сервер запустился, но не отвечает. Проверьте server.py.")
+            except Exception as e: 
+                print(f"Ошибка запуска: {e}")
         else:
-            print("stopping open-blockchain...")
-            stat = 0
-        input("\nНажмите Enter, чтобы вернуться в меню...")
-        clear()
+            print("[DAEMON] Остановка фонового процесса...")
+            if os.path.exists(PID_FILE):
+                try:
+                    with open(PID_FILE, "r") as f:
+                        pid = int(f.read().strip())
+                    # Принудительно завершаем процесс в Windows
+                    os.system(f"taskkill /PID {pid} /F")
+                except: pass
+                try: os.remove(PID_FILE)
+                except: pass
+            print("[SUCCESS] Остановлен.")
+        input("\nEnter..."); clear()
         
     elif command == "2":
         clear()
-        print("--- settings ---") 
-        print(f"Статус блокчейна: {stat}") 
-        input("\nНажмите Enter, чтобы вернуться в меню...")
-        clear()
+        if not is_running: print("Блокчейн оффлайн."); input("\nEnter..."); clear(); return "continue"
+        while True:
+            node_info = check_node_alive()
+            print(f"--- НАСТРОЙКИ (Сложность: {node_info['difficulty'] if node_info else '?'}) ---\n1. Изменить сложность\n2. Проводник блоков\n0. Назад")
+            cmd = input("> ")
+            if cmd == "1":
+                diff = int(input("Новая сложность: "))
+                send_post("/set_difficulty", {"difficulty": diff})
+            elif cmd == "2":
+                clear()
+                with urllib.request.urlopen(f"{SERVER_URL}/blocks") as r: blocks = json.loads(r.read().decode())
+                for b in blocks: print(f"Блок #{b['index']} | Данные: {b['data']}\nХэш: {b['hash']}\n" + "-"*30)
+                input("\nEnter..."); clear()
+            elif cmd == "0": clear(); break
         
     elif command == "3":
         clear()
-        print("--- plugins ---") 
-        input("\nНажмите Enter, чтобы вернуться в меню...")
-        clear()
+        if not is_running: print("Сервер выключен!")
+        else:
+            tx_data = input("Введите данные блока: ")
+            res = send_post("/mine", {"data": tx_data})
+            if res.get("status") == "mined": print(f"[SUCCESS] Блок #{res['block']['index']} добавлен в цепь!")
+        input("\nEnter..."); clear()
 
     elif command == "4":
-        clear()
-        print("Выход из аккаунта...")
-        print(f"[INFO] Блокчейн продолжает работу в фоне. Статус: {stat}")
-        input("\nНажмите Enter для перехода к окну авторизации...")
-        clear()
-        return "exit"  # Сигнал для выхода из меню в окно логина
+        clear(); print("Выход из аккаунта. Сервер работает в фоне."); input("\nEnter..."); clear()
+        return "exit"
         
     elif command == "0":
-        clear()
-        print("Остановка open-blockchain (shutdown)...")
-        stat = 0 # Сбрасываем статус в 0
-        print("Выход из аккаунта...")
-        print("Программа полностью завершена. Всего доброго!")
-        
-        import sys
-        sys.exit()  # Мгновенное и полное закрытие программы
-    
+        clear(); print("[SHUTDOWN] Выключение сервера...")
+        if os.path.exists(PID_FILE):
+            try:
+                with open(PID_FILE, "r") as f: pid = int(f.read().strip())
+                os.system(f"taskkill /PID {pid} /F")
+            except: pass
+            try: os.remove(PID_FILE)
+            except: pass
+        sys.exit()
     return "continue"
-
-
-
-
-def init_admpanel():
-    print("starting admin panel")
-    print("")
-    adminpanel()
-
 
 def adminpanel():
     while True:
-        if stat == 0:
-            print("#############open-blockchain##########")
-            print("###############admin-panel############")
-            print("# 1. start open-blockchain           #")
-            print("# 2. settings                        #")
-            print("# 3. plugins                         #")       
-            print("# 4. log out                         #")       
-            print("# 0. shutdown and exit               #")
-            print("######################################")
-        elif stat == 1:
-            print("#############open-blockchain##########")
-            print("###############admin-panel############")
-            print("# 1. stop open-blockchain            #")
-            print("# 2. settings                        #")
-            print("# 3. plugins                         #")       
-            print("# 4. log out                         #")       
-            print("# 0. shutdown and exit               #")
-            print("######################################")
-            
-        command = input("> ")
-        
-        result = com_exec(command)
-        if result == "exit":
-            login()  # Возвращаемся в окно логина
-            break    # Прерываем текущий цикл меню
-
-
+        is_run = check_node_alive() is not None
+        print(f"#############open-blockchain##########\n###############admin-panel (Фон: {'ON' if is_run else 'OFF'})###")
+        print(f"# 1. {'stop' if is_run else 'start'} background node            #\n# 2. settings & block explorer       #\n# 3. MINE NEW BLOCK ON NODE          #\n# 4. log out                         #\n# 0. shutdown node and exit          #\n######################################")
+        if com_exec(input("> ")) == "exit":
+            login(); break
 
 def login():                                        
-    while True:  # Бесконечный цикл вместо рекурсии
-        print("#############open-blockchain##############")
-        print("# to start/manage open-blockchain log in #")
-        print("##########################################")
-        print("")
-        log = input("username: ")
-        if log == user:
-            pas = input("password: ")
-            if pas == password:
-                print("login successful!")
-                clear()
-                init_admpanel()
-                break  # Выходим из цикла авторизации, так как зашли успешно
-            else:
-                clear()
-                print("Wrong password! Try again.\n")
-        else:
-            clear()
-            print("Wrong username! Try again.\n")
+    while True:
+        print("#############open-blockchain##############\n# to start/manage open-blockchain log in #\n##########################################\n")
+        if input("username: ") == user and input("password: ") == password:
+            clear(); adminpanel(); break
+        else: clear(); print("Неверно!\n")
 
-
-def startup():
-    print(platform.system())
-    print("starting open-blockchain")
-    print("|||")
-    print("|||")
-    print("|||")
-    clear()
-    login()
-
-# Точка входа для запуска файла напрямую
-if __name__ == "__main__":
-    startup()
-
-
+def startup(): clear(); login()

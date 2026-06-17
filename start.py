@@ -5,15 +5,12 @@
 #the Free Software Foundation, either version 3 of the License, or
 #(at your option) any later version.
 
-import sys
-import os
 
-# Гарантируем, что Python всегда видит папку проекта и вашу 'libs'
+import sys, os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-
-# Импортируем функцию startup из объединенного файла main
 from src.python.main import startup
 
 if __name__ == "__main__":
     startup()
+
 
