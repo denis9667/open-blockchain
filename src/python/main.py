@@ -6,7 +6,7 @@
 #(at your option) any later version.
 
 
-import os, sys, time, json, urllib.request, subprocess
+import os, sys, time, json, urllib.request, subprocess, signal
 
 try:
     from libs.clear import clear_console as clear
@@ -29,6 +29,17 @@ def send_post(endpoint, data):
         with urllib.request.urlopen(req) as r: return json.loads(r.read().decode())
     except: return {"status": "error"}
 
+def stop_node():
+    if os.path.exists(PID_FILE):
+        try:
+            with open(PID_FILE, "r") as f: 
+                pid = int(f.read().strip())
+            # Кросс-платформенное принудительное завершение процесса
+            os.kill(pid, signal.SIGTERM)
+        except: pass
+        try: os.remove(PID_FILE)
+        except: pass
+
 def com_exec(command): 
     node_info = check_node_alive()
     is_running = node_info is not None
@@ -36,49 +47,31 @@ def com_exec(command):
     if command == "1":
         clear()
         if not is_running:
-            print("[DAEMON] Запуск фонового блокчейна FastAPI через pythonw...")
+            print("[DAEMON] Запуск фонового блокчейна FastAPI...")
             try:
-                # Находим путь к скрытому pythonw.exe в вашем окружении или системе
                 python_exe = sys.executable
-                pythonw_exe = python_exe.replace("python.exe", "pythonw.exe")
-                if not os.path.exists(pythonw_exe):
-                    pythonw_exe = "pythonw"
-
-                # Путь к файлу сервера
-                server_path = os.path.join(os.path.dirname(__abspath__ if '__abspath__' in locals() else __file__), "server.py")
+                server_path = os.path.join(os.path.dirname(__file__), "server.py")
                 
-                # Запускаем сервер абсолютно скрытно, без создания окна консоли
+                # Флаг скрытия окна только для Windows, на Unix это не вызовет ошибок
                 creation_flags = subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0
+                
                 proc = subprocess.Popen(
-                    [pythonw_exe, server_path],
+                    [python_exe, server_path],
                     creationflags=creation_flags,
                     stdout=subprocess.DEVNULL,
                     stderr=subprocess.DEVNULL
                 )
                 
-                # Записываем ID процесса в файл, чтобы потом его потушить
                 with open(PID_FILE, "w") as f:
                     f.write(str(proc.pid))
                 
-                # Ждем инициализации сервера
                 time.sleep(2.5)
-                if check_node_alive():
-                    print("[SUCCESS] Блокчейн успешно запущен в фоне!")
-                else:
-                    print("[ERROR] Сервер запустился, но не отвечает. Проверьте server.py.")
-            except Exception as e: 
-                print(f"Ошибка запуска: {e}")
+                if check_node_alive(): print("[SUCCESS] Блокчейн успешно запущен в фоне!")
+                else: print("[ERROR] Сервер не ответил. Проверьте server.py.")
+            except Exception as e: print(f"Ошибка запуска: {e}")
         else:
             print("[DAEMON] Остановка фонового процесса...")
-            if os.path.exists(PID_FILE):
-                try:
-                    with open(PID_FILE, "r") as f:
-                        pid = int(f.read().strip())
-                    # Принудительно завершаем процесс в Windows
-                    os.system(f"taskkill /PID {pid} /F")
-                except: pass
-                try: os.remove(PID_FILE)
-                except: pass
+            stop_node()
             print("[SUCCESS] Остановлен.")
         input("\nEnter..."); clear()
         
@@ -114,13 +107,7 @@ def com_exec(command):
         
     elif command == "0":
         clear(); print("[SHUTDOWN] Выключение сервера...")
-        if os.path.exists(PID_FILE):
-            try:
-                with open(PID_FILE, "r") as f: pid = int(f.read().strip())
-                os.system(f"taskkill /PID {pid} /F")
-            except: pass
-            try: os.remove(PID_FILE)
-            except: pass
+        stop_node()
         sys.exit()
     return "continue"
 
