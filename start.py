@@ -7,10 +7,10 @@
 
 
 import sys, os
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(os.path.dirname(os.path.abspath(__file__))) #что-бы точно библиотеки из src/python/libs/*.py импортировались
 from src.python.main import startup
 
 if __name__ == "__main__":
-    startup()
+    startup() #запуск входа в админский аккаунт
 
 

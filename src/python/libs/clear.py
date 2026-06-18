@@ -9,7 +9,7 @@
 import platform
 import os
 
-def clear_console():
+def clear_console(): #костыль для очистки экрана
     if platform.system() == "Windows":
         os.system('cls')
     else:
